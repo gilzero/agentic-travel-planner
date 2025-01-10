@@ -1,3 +1,23 @@
+"""
+app.py
+
+This module initializes and runs a FastAPI application that serves both HTTP and WebSocket endpoints.
+- The HTTP endpoint renders an HTML template using Jinja2.
+- The WebSocket endpoint handles real-time communication for processing graph data related to a company.
+
+Dependencies:
+- FastAPI for web framework
+- Uvicorn for ASGI server
+- Jinja2 for templating
+- dotenv for environment variable management
+- A custom Graph class for processing
+
+Usage:
+- Run this script to start the server.
+- Access the HTTP endpoint at the root URL to view the index page.
+- Connect to the WebSocket endpoint at /ws for real-time data processing.
+"""
+
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request 
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -6,19 +26,25 @@ import uvicorn
 from backend.graph import Graph  # Adjust this import if necessary 
 
 from dotenv import load_dotenv
-load_dotenv('.env')
+load_dotenv('.env')  # Load environment variables from a .env file
 
+# Initialize the FastAPI app
 app = FastAPI()
+
+# Mount the static files directory
 app.mount("/static", StaticFiles(directory="frontend/static"), name="static")
+
+# Set up Jinja2 templates directory
 templates = Jinja2Templates(directory="frontend/templates")
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):  # Add the type hint here
+    # Render the index.html template with the request context
     return templates.TemplateResponse("index.html", {"request": request})
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-    await websocket.accept()
+    await websocket.accept()  # Accept the WebSocket connection
     try:
         # Receive initial data from the WebSocket client
         data = await websocket.receive_json()
@@ -36,13 +62,15 @@ async def websocket_endpoint(websocket: WebSocket):
         # Run the graph process without additional arguments
         await graph.run(progress_callback=progress_callback)
 
+        # Notify the client that the research is completed
         await websocket.send_text("✔️ Research completed.")
     except WebSocketDisconnect:
-        print("WebSocket disconnected")
+        print("WebSocket disconnected")  # Log disconnection
     finally:
-        await websocket.close()
+        await websocket.close()  # Ensure the WebSocket is closed
 
 if __name__ == "__main__":
+    # Run the app with Uvicorn server
     uvicorn.run(
         "app:app",
         host="127.0.0.1",

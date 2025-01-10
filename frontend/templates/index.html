@@ -1,3 +1,9 @@
+<!-- 
+    @fileoverview This HTML file serves as the main interface for the Company Research Tool.
+    It includes sections for user input, progress tracking, and displaying the final report.
+    The page is styled with an external CSS file and uses JavaScript for dynamic interactions.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +17,7 @@
     <h1 class="main-title">Company Research Tool</h1>
     
     <div class="container">
+        <!-- User Input Section -->
         <div class="input-section">
             <div class="section-header">
                 <h2>User Input</h2>
@@ -35,6 +42,7 @@
             
             <button onclick="startResearch()">Generate Report</button>
             
+            <!-- Cluster Selection Section -->
             <div id="cluster-selection">
                 <div class="form-group">
                     <label for="cluster-input">Select Cluster</label>
@@ -43,12 +51,16 @@
                 <button onclick="submitClusterSelection()">Submit Selection</button>
             </div>
         </div>
+        
+        <!-- Progress Section -->
         <div class="progress-section">
             <div class="section-header">
                 <h2>Progress</h2>
             </div>
             <div id="progress"></div>
         </div>
+        
+        <!-- Final Report Section -->
         <div class="final-report-section">
             <div class="section-header">
                 <h2>Final Report</h2>

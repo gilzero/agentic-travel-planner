@@ -1,32 +1,64 @@
+"""
+@fileoverview This module defines the GenerateNode class, which is responsible for generating a Markdown report
+based on the research state. It utilizes the ChatAnthropic model to create a structured report with inline citations
+and a citations section.
+"""
+
 from datetime import datetime
 from langchain_core.messages import AIMessage
 from langchain_anthropic import ChatAnthropic
 from ..classes import ResearchState
 
-
-
 class GenerateNode:
+    """
+    Represents the node responsible for generating a Markdown report in the research workflow.
+
+    Attributes:
+        model (ChatAnthropic): An instance of the ChatAnthropic model used for generating the report.
+    """
+
     def __init__(self):
+        """
+        Initializes the GenerateNode with a specified ChatAnthropic model.
+        """
         self.model = ChatAnthropic(
             model="claude-3-5-haiku-20241022",
             temperature=0
         )
+        print("📝 GenerateNode initialized with ChatAnthropic model.")
+
     def extract_markdown_content(self, content):
-    # Strip out extra preamble or conversational text, retaining only Markdown.
+        """
+        Extracts the Markdown content from the given text, removing any extra preamble or conversational text.
+
+        Args:
+            content (str): The text content from which to extract Markdown.
+
+        Returns:
+            str: The extracted Markdown content.
+        """
+        print("🔍 Extracting Markdown content from response...")
         start_index_hash = content.find("#")
         start_index_bold = content.find("**")
         
         if start_index_hash != -1 and (start_index_bold == -1 or start_index_hash < start_index_bold):
-            # '#' found and it comes before '**' (or '**' not found)
             return content[start_index_hash:].strip()
         elif start_index_bold != -1:
-            # '**' found
             return content[start_index_bold:].strip()
         else:
-            # Neither '#' nor '**' found, return the whole content stripped
             return content.strip()
 
     async def generate_report(self, state: ResearchState):
+        """
+        Generates a Markdown report based on the current research state.
+
+        Args:
+            state (ResearchState): The current state of the research process.
+
+        Returns:
+            dict: A dictionary containing messages about the report generation and the report content.
+        """
+        print("🗂️ Preparing to generate report...")
         report_title = f"Weekly Report on {state['company']}"
         report_date = datetime.now().strftime('%B %d, %Y')
 
@@ -67,25 +99,36 @@ class GenerateNode:
         messages = [("system", "Your task is to generate a Markdown report."), ("human", prompt)]
 
         try:
-            # Invoke the model
+            print("🚀 Sending prompt to ChatAnthropic model...")
             response = await self.model.ainvoke(messages)
-
-            # Extract the Markdown content
+            print("✅ Response received from model.")
             markdown_content = self.extract_markdown_content(response.content)
-
-            # Add the title and date to the response
             full_report = f"# {report_title}\n\n*{report_date}*\n\n{markdown_content}"
+            print("📄 Report generated successfully!")
+            print("🖨️ Final Report:\n" + "="*40 + f"\n{full_report}\n" + "="*40)
             return {"messages": [AIMessage(content=f"Report generated successfully!\n{full_report}")], "report": full_report}
         except Exception as e:
             error_message = f"Error generating report: {str(e)}"
+            print(f"❌ {error_message}")
             return {
                 "messages": [AIMessage(content=error_message)],
                 "report": f"# Error Generating Report\n\n*{report_date}*\n\n{error_message}"
             }
 
-
     async def run(self, state: ResearchState, websocket):
+        """
+        Executes the report generation process and sends a status message via WebSocket if provided.
+
+        Args:
+            state (ResearchState): The current state of the research process.
+            websocket: The WebSocket connection for real-time communication with the frontend.
+
+        Returns:
+            dict: The result of the report generation, including messages and the report content.
+        """
+        print("🏃‍♂️ Running the report generation process...")
         if websocket:
             await websocket.send_text("⌛️ Generating report...")
         result = await self.generate_report(state)
+        print("🎉 Report generation process completed.")
         return result

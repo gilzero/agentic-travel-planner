@@ -1,3 +1,10 @@
+"""
+File: graph.py
+Description: This module defines the Graph class, which sets up and manages a research workflow using a state graph.
+The workflow consists of various nodes that represent different stages of the research process, from initial grounding
+to publishing the final report. The class also handles asynchronous execution of the workflow and provides progress updates.
+"""
+
 from langchain_core.messages import SystemMessage, AIMessage
 from functools import partial
 from langgraph.graph import StateGraph
@@ -26,7 +33,21 @@ from backend.utils.routing_helper import (
 )
 
 class Graph:
+    """
+    The Graph class initializes and manages a research workflow using a state graph.
+    It sets up nodes representing different stages of the research process and handles
+    the execution of the workflow asynchronously.
+    """
     def __init__(self, company=None, url=None, output_format="pdf", websocket=None):
+        """
+        Initializes the Graph with a research state, nodes, and a workflow.
+
+        Args:
+            company (str, optional): The name of the company for the research.
+            url (str, optional): The URL associated with the company.
+            output_format (str, optional): The desired output format for the report.
+            websocket (WebSocket, optional): WebSocket for real-time communication.
+        """
         # Initial setup of ResearchState and messages
         self.messages = [
             SystemMessage(content="You are an expert researcher ready to begin the information gathering process.")
@@ -83,6 +104,12 @@ class Graph:
         self.websocket = websocket
 
     async def run(self, progress_callback=None):
+        """
+        Compiles and executes the workflow asynchronously, providing progress updates.
+
+        Args:
+            progress_callback (callable, optional): A callback function to handle progress updates.
+        """
         # Compile the graph
         graph = self.workflow.compile(checkpointer=self.memory)
         thread = {"configurable": {"thread_id": "2"}}
@@ -96,13 +123,26 @@ class Graph:
                     await progress_callback(output_message)
 
     def curried_node(self, node_run_method):
-        # Curried wrapper for handling websocket
+        """
+        Wraps a node's run method to handle websocket communication.
+
+        Args:
+            node_run_method (callable): The run method of a node.
+
+        Returns:
+            callable: A wrapped asynchronous function for the node.
+        """
         async def wrapper(state):
             return await node_run_method(state, self.websocket)
         return wrapper
 
-    # Compile for langgraph studio
     def compile(self):
+        """
+        Compiles the workflow for use in langgraph studio.
+
+        Returns:
+            StateGraph: The compiled state graph.
+        """
         # Use a consistent thread ID for state persistence
         thread = {"configurable": {"thread_id": "2"}}
 

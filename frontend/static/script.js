@@ -1,6 +1,17 @@
+/**
+ * @fileoverview This script handles the client-side logic for initiating research,
+ *               managing WebSocket connections, and updating the UI based on server responses.
+ *               It includes functions for input validation, WebSocket communication,
+ *               and user interaction with the generated report.
+ */
+
 let ws;
 let currentMarkdownContent = '';
 
+/**
+ * Validates the user inputs for company name and URL.
+ * @returns {boolean} True if inputs are valid, otherwise false.
+ */
 function validateInputs() {
     const companyName = document.getElementById("companyName").value.trim();
     const companyUrl = document.getElementById("companyUrl").value.trim();
@@ -25,6 +36,11 @@ function validateInputs() {
     
     return true;
 }
+
+/**
+ * Initiates the research process by validating inputs, clearing previous results,
+ * and establishing a WebSocket connection to the server.
+ */
 function startResearch() {
     if (!validateInputs()) {
         return;
@@ -94,6 +110,9 @@ function startResearch() {
     };
 }
 
+/**
+ * Sends the selected cluster to the server via WebSocket.
+ */
 function submitClusterSelection() {
     const clusterSelection = document.getElementById("cluster-input").value;
     if (ws && clusterSelection) {
@@ -103,6 +122,10 @@ function submitClusterSelection() {
     }
 }
 
+/**
+ * Copies the generated report content to the clipboard.
+ * Displays a temporary confirmation message upon success.
+ */
 async function copyReport() {
     if (currentMarkdownContent) {
         try {

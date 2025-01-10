@@ -1,3 +1,9 @@
+"""
+@fileoverview This module initializes the nodes package, importing essential nodes for the research workflow.
+It includes definitions for initial grounding, sub-questions generation, research, document clustering, manual cluster selection,
+document enrichment, report generation, evaluation, and publishing.
+"""
+
 from .initial_grounding import InitialGroundingNode
 from .sub_questions import SubQuestionsNode
 from .research import ResearcherNode

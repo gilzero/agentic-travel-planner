@@ -1,5 +1,18 @@
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+/* 
+    @fileoverview This CSS file provides the styling for the Company Research Tool interface.
+    It includes styles for layout, typography, and component-specific designs to ensure a 
+    consistent and user-friendly appearance across the application.
+*/
 
+/* Global Styles */
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    font-family: Arial, sans-serif; 
+}
+
+/* Body Styles */
 body { 
     display: flex; 
     flex-direction: column; 
@@ -10,6 +23,7 @@ body {
     overflow-x: hidden; 
 }
 
+/* Main Title Styles */
 .main-title { 
     color: #2C3E50; 
     margin-bottom: 10px;
@@ -34,6 +48,7 @@ body {
     border-radius: 2px;
 }
 
+/* Container Styles */
 .container { 
     display: flex; 
     gap: 20px; 
@@ -42,6 +57,7 @@ body {
     height: calc(100vh - 100px); 
 }
 
+/* Section Styles */
 .input-section, .progress-section, .final-report-section { 
     height: 100%; 
     padding: 20px; 
@@ -55,6 +71,7 @@ body {
     overflow-y: auto; 
 }
 
+/* Section Header Styles */
 .section-header {
     border: 2px solid #e0e0e0;
     border-radius: 6px;
@@ -74,11 +91,11 @@ body {
     font-weight: 600;
 }
 
+/* Flex Basis for Sections */
 .input-section { flex: 1.5; flex-basis: 20%; }
-
 .progress-section, .final-report-section { flex: 2; flex-basis: 40%; }
 
-/* Progress section specific styles */
+/* Progress Section Specific Styles */
 .progress-section { background-color: #f8f9fa; }
 
 #progress { 
@@ -91,7 +108,7 @@ body {
     gap: 8px; 
 }
 
-/* Individual progress messages */
+/* Individual Progress Messages */
 .progress-message { 
     padding: 12px; 
     background-color: white; 
@@ -102,6 +119,7 @@ body {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); 
 }
 
+/* Copy Button Styles */
 .copy-button {
     background-color: #f0f0f0;
     color: #666;
@@ -124,6 +142,7 @@ body {
     background-color: #d0d0d0;
 }
 
+/* Form Group Styles */
 .form-group { margin-bottom: 20px; }
 
 .form-group label { 
@@ -148,6 +167,7 @@ body {
     box-shadow: 0 0 0 3px rgba(70, 139, 255, 0.1); 
 }
 
+/* Button Styles */
 button { 
     background-color: #468BFF; 
     color: white; 
@@ -163,6 +183,7 @@ button {
 
 button:hover { background-color: #357ABD; }
 
+/* Cluster Selection Styles */
 #cluster-selection { 
     display: none; 
     margin-top: 20px; 
@@ -170,7 +191,7 @@ button:hover { background-color: #357ABD; }
     border-top: 1px solid #ddd; 
 }
 
-/* Scrollbar styling */
+/* Scrollbar Styling */
 #progress::-webkit-scrollbar { width: 8px; }
 
 #progress::-webkit-scrollbar-track { 
@@ -185,7 +206,7 @@ button:hover { background-color: #357ABD; }
 
 #progress::-webkit-scrollbar-thumb:hover { background: #999; }
 
-
+/* Final Report Section Styles */
 .final-report-section {
     background-color: #ffffff;
 }
@@ -198,6 +219,7 @@ button:hover { background-color: #357ABD; }
     font-size: 15px;
     line-height: 1.8;
 }
+
 #report h1:first-child {
     margin-top: 0; 
 }
