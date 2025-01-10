@@ -6,39 +6,39 @@ It includes classes for handling Tavily search inputs, document clustering, and 
 from pydantic import BaseModel, Field
 from typing import List, Optional
 
-class TavilyQuery(BaseModel):
+class TravelQuery(BaseModel):
     """
-    Represents a single query for Tavily's web search tool.
+    Represents a single query for Tavily's travel search tool.
 
     Attributes:
-        query (str): The web search query.
+        query (str): The travel search query.
     """
-    query: str = Field(description="The web search query.")
+    query: str = Field(description="The travel search query.")
 
-class TavilySearchInput(BaseModel):
+class TravelSearchInput(BaseModel):
     """
-    Defines the input schema for Tavily's search tool using a multi-query approach.
-
-    Attributes:
-        sub_queries (List[TavilyQuery]): A set of sub-queries that can be answered in isolation.
-    """
-    sub_queries: List[TavilyQuery] = Field(description="A set of sub-queries that can be answered in isolation.")
-
-class DocumentCluster(BaseModel):
-    """
-    Represents a cluster of documents related to a specific company.
+    Defines the input schema for Tavily's travel search tool using a multi-query approach.
 
     Attributes:
-        company_name (str): The name or identifier of the company these documents belong to.
-        cluster (List[str]): A list of URLs relevant to the identified company.
+        sub_queries (List[TravelQuery]): A set of sub-queries that can be answered in isolation.
     """
-    company_name: str = Field(
+    sub_queries: List[TravelQuery] = Field(description="A set of sub-queries that can be answered in isolation.")
+
+class TravelOptionCluster(BaseModel):
+    """
+    Represents a cluster of travel options related to a specific destination.
+
+    Attributes:
+        destination_name (str): The name or identifier of the destination these options belong to.
+        options (List[str]): A list of URLs relevant to the identified destination.
+    """
+    destination_name: str = Field(
         ...,
-        description="The name or identifier of the company these documents belong to."
+        description="The name or identifier of the destination these options belong to."
     )
-    cluster: List[str] = Field(
+    options: List[str] = Field(
         ...,
-        description="A list of URLs relevant to the identified company."
+        description="A list of URLs relevant to the identified destination."
     )
 
 class DocumentClusters(BaseModel):

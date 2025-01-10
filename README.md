@@ -1,6 +1,6 @@
-# Company Researcher with Tavily and Langgraph
+# Travel Planner with Tavily and Langgraph
 
-The **Company Researcher** is an open-source tool designed for in-depth company analysis. Built with **Tavily’s `search` and `extract` capabilities** and powered by **LangGraph**, it delivers percise, real-time insights in a structured format. Ideal for competitive intelligence, lead research, and Go-to-Market (GTM) strategies, this tool leverages advanced AI-driven workflows to provide comprehensive, reliable reports for data-driven decision-making.
+The **Travel Planner** is an open-source tool designed for creating detailed travel itineraries. Built with **Tavily’s `search` and `extract` capabilities** and powered by **LangGraph**, it delivers precise, real-time travel insights in a structured format. Ideal for trip planning, destination research, and itinerary management, this tool leverages advanced AI-driven workflows to provide comprehensive, reliable travel plans for data-driven decision-making.
 
 ## Table of Contents
 1. [Overview](#overview)
@@ -17,7 +17,7 @@ The **Company Researcher** is an open-source tool designed for in-depth company 
 
 ## Overview
 
-The **Company Researcher** is an open-source tool designed for in-depth company analysis. Built with **Tavily’s search and extract capabilities** and powered by **LangGraph**, it gathers both general and targeted information, using feedback loops and optional human validation for accuracy. It is designed to handle complex scenarios, such as distinguishing similarly named companies or gathering data in sparsely documented fields, and can be easily adapted to other research domains.
+The **Travel Planner** is an open-source tool designed for creating detailed travel itineraries. Built with **Tavily’s search and extract capabilities** and powered by **LangGraph**, it gathers both general and targeted information, using feedback loops and optional human validation for accuracy. It is designed to handle complex scenarios, such as distinguishing similarly named companies or gathering data in sparsely documented fields, and can be easily adapted to other research domains.
 
 ---
 ![workflow](https://i.imgur.com/92E2kcj.jpeg)

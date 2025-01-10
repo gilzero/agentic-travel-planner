@@ -3,7 +3,7 @@ app.py
 
 This module initializes and runs a FastAPI application that serves both HTTP and WebSocket endpoints.
 - The HTTP endpoint renders an HTML template using Jinja2.
-- The WebSocket endpoint handles real-time communication for processing graph data related to a company.
+- The WebSocket endpoint handles real-time communication for processing graph data related to travel planning.
 
 Dependencies:
 - FastAPI for web framework
@@ -15,7 +15,7 @@ Dependencies:
 Usage:
 - Run this script to start the server.
 - Access the HTTP endpoint at the root URL to view the index page.
-- Connect to the WebSocket endpoint at /ws for real-time data processing.
+- Connect to the WebSocket endpoint at /ws for real-time travel planning.
 """
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request 
@@ -48,12 +48,12 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         # Receive initial data from the WebSocket client
         data = await websocket.receive_json()
-        company_name = data.get("companyName")
-        company_url = data.get("companyUrl")
+        destination = data.get("destination")
+        travel_dates = data.get("travelDate")
         output_format = data.get("outputFormat", "pdf")
         
-        # Initialize the Graph with company, URL, and output format
-        graph = Graph(company=company_name, url=company_url, output_format=output_format, websocket=websocket)
+        # Initialize the Graph with destination, travel dates, and output format
+        graph = Graph(destination=destination, travel_dates=travel_dates, output_format=output_format, websocket=websocket)
         
         # Progress callback to send messages back to the client
         async def progress_callback(message):
@@ -62,8 +62,8 @@ async def websocket_endpoint(websocket: WebSocket):
         # Run the graph process without additional arguments
         await graph.run(progress_callback=progress_callback)
 
-        # Notify the client that the research is completed
-        await websocket.send_text("✔️ Research completed.")
+        # Notify the client that the itinerary is completed
+        await websocket.send_text("✔️ Itinerary planning completed.")
     except WebSocketDisconnect:
         print("WebSocket disconnected")  # Log disconnection
     finally:

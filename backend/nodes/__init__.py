@@ -10,6 +10,6 @@ from .research import ResearcherNode
 from .cluster import ClusterNode
 from .manual_cluster_select import ManualSelectionNode
 from .enrich_docs import EnrichDocsNode
-from .generate_report import GenerateNode
+from .generate_itinerary import GenerateNode
 from .eval import EvaluationNode
 from .publish import PublishNode

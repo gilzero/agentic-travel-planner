@@ -38,13 +38,13 @@ class Graph:
     It sets up nodes representing different stages of the research process and handles
     the execution of the workflow asynchronously.
     """
-    def __init__(self, company=None, url=None, output_format="pdf", websocket=None):
+    def __init__(self, destination=None, travel_dates=None, output_format="pdf", websocket=None):
         """
         Initializes the Graph with a research state, nodes, and a workflow.
 
         Args:
-            company (str, optional): The name of the company for the research.
-            url (str, optional): The URL associated with the company.
+            destination (str, optional): The destination for the travel planning.
+            travel_dates (str, optional): The travel dates for the travel planning.
             output_format (str, optional): The desired output format for the report.
             websocket (WebSocket, optional): WebSocket for real-time communication.
         """

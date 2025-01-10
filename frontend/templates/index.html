@@ -1,6 +1,6 @@
 <!-- 
-    @fileoverview This HTML file serves as the main interface for the Company Research Tool.
-    It includes sections for user input, progress tracking, and displaying the final report.
+    @fileoverview This HTML file serves as the main interface for the Travel Planner Tool.
+    It includes sections for user input, progress tracking, and displaying the final itinerary.
     The page is styled with an external CSS file and uses JavaScript for dynamic interactions.
 -->
 
@@ -9,12 +9,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Company Research Tool</title>
+    <title>Travel Planner Tool</title>
     <link rel="stylesheet" href="/static/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-    <h1 class="main-title">Company Research Tool</h1>
+    <h1 class="main-title">Travel Planner Tool</h1>
     
     <div class="container">
         <!-- User Input Section -->
@@ -23,13 +23,13 @@
                 <h2>User Input</h2>
             </div>
             <div class="form-group">
-                <label for="companyName">Company Name</label>
-                <input type="text" id="companyName" placeholder="Enter company name">
+                <label for="destination">Destination</label>
+                <input type="text" id="destination" placeholder="Enter destination">
             </div>
             
             <div class="form-group">
-                <label for="companyUrl">Company URL</label>
-                <input type="url" id="companyUrl" placeholder="Enter company website">
+                <label for="travelDate">Travel Date</label>
+                <input type="date" id="travelDate">
             </div>
             
             <div class="form-group">
@@ -40,15 +40,15 @@
                 </select>
             </div>
             
-            <button onclick="startResearch()">Generate Report</button>
+            <button onclick="startPlanning()">Generate Itinerary</button>
             
-            <!-- Cluster Selection Section -->
-            <div id="cluster-selection">
+            <!-- Option Selection Section -->
+            <div id="option-selection" style="display: none;">
                 <div class="form-group">
-                    <label for="cluster-input">Select Cluster</label>
-                    <input type="text" id="cluster-input" placeholder="Enter cluster number">
+                    <label for="option-input">Select Option</label>
+                    <input type="text" id="option-input" placeholder="Enter option number">
                 </div>
-                <button onclick="submitClusterSelection()">Submit Selection</button>
+                <button onclick="submitOptionSelection()">Submit Selection</button>
             </div>
         </div>
         
@@ -59,19 +59,6 @@
             </div>
             <div id="progress"></div>
         </div>
-        
-        <!-- Final Report Section -->
-        <div class="final-report-section">
-            <div class="section-header">
-                <h2>Final Report</h2>
-                <button id="copyButton" class="copy-button" onclick="copyReport()" style="display: none;">
-                    Copy
-                </button>
-            </div>
-            <div id="report"></div>
-        </div>
     </div>
-    
-    <script src="/static/script.js"></script>
 </body>
 </html>

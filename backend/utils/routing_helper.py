@@ -5,7 +5,7 @@ such as cluster selection, manual selection, document count, and evaluation grad
 """
 
 from typing import Literal
-from ..classes import ResearchState
+from ..classes import ResearchState, TravelState
 from langchain_core.messages import AIMessage
 
 def route_based_on_cluster(state: ResearchState) -> Literal["enrich_docs", "manual_cluster_selection"]:
@@ -63,3 +63,31 @@ def route_based_on_evaluation(state: ResearchState) -> Literal["research", "publ
     """
     evaluation = state.get("eval")
     return "research" if evaluation.grade == 1 else "publish"
+
+def route_based_on_option(state: TravelState) -> Literal["enrich_options", "manual_option_selection"]:
+    """
+    Determines the next step based on the chosen travel option.
+
+    Args:
+        state (TravelState): The current state of the travel planning.
+
+    Returns:
+        Literal["enrich_options", "manual_option_selection"]: The next step in the workflow.
+    """
+    if state.get('chosen_option') is not None:
+        return "enrich_options"
+    return "manual_option_selection"
+
+def route_after_manual_selection(state: TravelState) -> Literal["enrich_options", "option"]:
+    """
+    Determines the next step after manual option selection.
+
+    Args:
+        state (TravelState): The current state of the travel planning.
+
+    Returns:
+        Literal["enrich_options", "option"]: The next step in the workflow.
+    """
+    if state.get('chosen_option') >= 0:
+        return "enrich_options"
+    return "option"

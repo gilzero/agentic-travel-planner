@@ -1,36 +1,28 @@
 /**
- * @fileoverview This script handles the client-side logic for initiating research,
+ * @fileoverview This script handles the client-side logic for initiating travel planning,
  *               managing WebSocket connections, and updating the UI based on server responses.
  *               It includes functions for input validation, WebSocket communication,
- *               and user interaction with the generated report.
+ *               and user interaction with the generated itinerary.
  */
 
 let ws;
 let currentMarkdownContent = '';
 
 /**
- * Validates the user inputs for company name and URL.
+ * Validates the user inputs for destination and travel date.
  * @returns {boolean} True if inputs are valid, otherwise false.
  */
 function validateInputs() {
-    const companyName = document.getElementById("companyName").value.trim();
-    const companyUrl = document.getElementById("companyUrl").value.trim();
+    const destination = document.getElementById("destination").value.trim();
+    const travelDate = document.getElementById("travelDate").value.trim();
     
-    if (!companyName) {
-        alert("Please enter a company name");
+    if (!destination) {
+        alert("Please enter a destination");
         return false;
     }
     
-    if (!companyUrl) {
-        alert("Please enter a company URL");
-        return false;
-    }
-    
-    // Basic URL validation
-    try {
-        new URL(companyUrl);
-    } catch (error) {
-        alert("Please enter a valid URL (including http:// or https://)");
+    if (!travelDate) {
+        alert("Please enter a travel date");
         return false;
     }
     
@@ -38,23 +30,23 @@ function validateInputs() {
 }
 
 /**
- * Initiates the research process by validating inputs, clearing previous results,
+ * Initiates the travel planning process by validating inputs, clearing previous results,
  * and establishing a WebSocket connection to the server.
  */
-function startResearch() {
+function startPlanning() {
     if (!validateInputs()) {
         return;
     }
     
     const progressDiv = document.getElementById("progress");
-    const clusterSelectionDiv = document.getElementById("cluster-selection");
-    const reportDiv = document.getElementById("report");
+    const optionSelectionDiv = document.getElementById("option-selection");
+    const itineraryDiv = document.getElementById("itinerary");
     const copyButton = document.getElementById("copyButton");
     
     // Clear previous content
     progressDiv.innerHTML = "";
-    reportDiv.innerHTML = "";
-    clusterSelectionDiv.style.display = "none";
+    itineraryDiv.innerHTML = "";
+    optionSelectionDiv.style.display = "none";
     copyButton.style.display = "none";
     currentMarkdownContent = '';
     
@@ -63,21 +55,16 @@ function startResearch() {
     
     ws.onmessage = function(event) {
         const message = event.data;
-        if (message.includes("Please review the options and select the correct cluster")) {
-            clusterSelectionDiv.style.display = "block";
+        if (message.includes("Please review the options and select the correct option")) {
+            optionSelectionDiv.style.display = "block";
         }
-        // Handle final report differently
-        if (message.startsWith("Report generated successfully!")) {
-            currentMarkdownContent = message.replace("Report generated successfully!", "").trim();
+        // Handle final itinerary differently
+        if (message.startsWith("Itinerary generated successfully!")) {
+            currentMarkdownContent = message.replace("Itinerary generated successfully!", "").trim();
             // Render Markdown content
-            reportDiv.innerHTML = marked.parse(currentMarkdownContent);
+            itineraryDiv.innerHTML = marked.parse(currentMarkdownContent);
             // Show copy button
             copyButton.style.display = "block";
-            // Add progress message
-            // const messageElement = document.createElement("div");
-            // messageElement.className = "progress-message";
-            // messageElement.textContent = "Report generated successfully!";
-            // progressDiv.appendChild(messageElement);
         } else {
             // Create message element for all other messages
             const messageElement = document.createElement("div");
@@ -89,24 +76,6 @@ function startResearch() {
         requestAnimationFrame(() => {
             progressDiv.scrollTop = progressDiv.scrollHeight;
         });
-    };
-    
-    ws.onopen = function() {
-        const companyName = document.getElementById("companyName").value;
-        const companyUrl = document.getElementById("companyUrl").value;
-        const outputFormat = document.getElementById("outputFormat").value;
-        const payload = { companyName, companyUrl, outputFormat };
-        console.log("Sending WebSocket payload:", payload);
-        ws.send(JSON.stringify(payload));
-    };
-    
-    ws.onerror = function(error) {
-        const messageElement = document.createElement("div");
-        messageElement.className = "progress-message";
-        messageElement.textContent = "Error: " + error.message;
-        messageElement.style.borderLeftColor = "#FE363B"; // Red border for errors
-        progressDiv.appendChild(messageElement);
-        progressDiv.scrollTop = progressDiv.scrollHeight;
     };
 }
 

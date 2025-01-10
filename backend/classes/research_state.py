@@ -7,33 +7,33 @@ such as company information, document handling, and report evaluation.
 from langgraph.graph import add_messages
 from langchain_core.messages import AnyMessage
 from typing import TypedDict, List, Annotated, Dict, Union
-from .classes import TavilySearchInput, DocumentCluster, ReportEvaluation
+from .classes import TravelQuery, TravelSearchInput, TravelOptionCluster, ReportEvaluation
 
-class ResearchState(TypedDict):
+class TravelState(TypedDict):
     """
-    Represents the state of the research process.
+    Represents the state of the travel planning process.
 
     Attributes:
-        company (str): The name of the company being researched.
-        company_url (str): The URL associated with the company.
+        destination (str): The name of the destination being planned.
+        travel_dates (str): The dates associated with the travel.
         initial_documents (Dict[str, Dict[Union[str, int], Union[str, float]]]): Initial set of documents.
-        sub_questions (TavilySearchInput): Sub-questions for the research.
-        documents (Dict[str, Dict[Union[str, int], Union[str, float]]]): Documents collected during research.
-        document_clusters (List[DocumentCluster]): Clusters of related documents.
-        chosen_cluster (int): Index of the chosen document cluster.
-        report (str): The generated report.
-        eval (ReportEvaluation): Evaluation of the report.
-        output_format (str): Desired format of the output report.
-        messages (Annotated[list[AnyMessage], add_messages]): Messages related to the research process.
+        sub_questions (TravelSearchInput): Sub-questions for the travel planning.
+        documents (Dict[str, Dict[Union[str, int], Union[str, float]]]): Documents collected during planning.
+        travel_option_clusters (List[TravelOptionCluster]): Clusters of related travel options.
+        chosen_option (int): Index of the chosen travel option cluster.
+        itinerary (str): The generated itinerary.
+        eval (ReportEvaluation): Evaluation of the itinerary.
+        output_format (str): Desired format of the output itinerary.
+        messages (Annotated[list[AnyMessage], add_messages]): Messages related to the travel planning process.
     """
-    company: str 
-    company_url: str
+    destination: str 
+    travel_dates: str
     initial_documents: Dict[str, Dict[Union[str, int], Union[str, float]]]
-    sub_questions: TavilySearchInput
+    sub_questions: TravelSearchInput
     documents: Dict[str, Dict[Union[str, int], Union[str, float]]]
-    document_clusters: List[DocumentCluster]
-    chosen_cluster: int
-    report: str
+    travel_option_clusters: List[TravelOptionCluster]
+    chosen_option: int
+    itinerary: str
     eval: ReportEvaluation
     output_format: str
     messages: Annotated[list[AnyMessage], add_messages]
